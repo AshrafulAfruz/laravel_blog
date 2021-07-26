@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,9 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Auth::routes();
 
@@ -25,7 +26,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/',['as' => 'website.home', function () {
     return view('website.index');
 }]);
-
 Route::get('/post', ['as' => 'website.post', function () {
     return view('website.post');
 }]);
@@ -33,7 +33,13 @@ Route::get('/category',['as' => 'website.category', function () {
     return view('website.category');
 }]);
 
+//admin
 
-Route::get('/admins',['as' => 'admin.home', function () {
-    return view('admin.dashboard.index');
-}]);
+Route::group(['prefix'=>'admin','middleware'=> ['auth']], function(){
+
+    Route::get('/dashboard',['as' => 'admin.home', function () {
+        return view('admin.dashboard.index');
+    }]);
+    
+    Route::resource('/category', CategoryController::class);
+});
