@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\category;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
@@ -27,6 +27,7 @@ class storeCategoryRequest extends FormRequest
         return [
             'name' => 'required|unique:categories|max:255',
             'slug'=>'required|unique:categories|',
+            'description'=>'nullable',
         ];
     }
 

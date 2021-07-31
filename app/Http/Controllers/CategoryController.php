@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\storeCategoryRequest;
+use App\Http\Requests\category\storeCategoryRequest;
+use App\Http\Requests\category\updateCategoryRequest;
+
 use App\Models\Category;
 use Illuminate\Http\Request;
+use phpDocumentor\Reflection\DocBlock\Tags\See;
+use Illuminate\Support\Facades\Session;
 
 class CategoryController extends Controller
 {
@@ -15,7 +19,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::orderby('created_at', 'desc')->paginate(20);
+        $categories = Category::orderby('created_at', 'desc')->paginate(10);
         return view('admin.category.index',compact('categories'));
         //
     }
@@ -38,8 +42,11 @@ class CategoryController extends Controller
      */
     public function store(storeCategoryRequest $request)
     {
-        //dd($request->all());
+        //dd($request->validated());
         Category::create($request->validated());
+
+        Session::flash('success','Category created succesfully.');
+        return redirect()->route('category.index');
     }
 
     /**
@@ -61,7 +68,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        return view('admin.category.edit',compact('category'));
     }
 
     /**
@@ -71,9 +78,12 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(updateCategoryRequest $request, Category $category)
     {
-        //
+        $category->update($request->validated());
+
+        Session::flash('success','Category updated succesfully.');
+        return redirect()->route('category.index');
     }
 
     /**
@@ -84,6 +94,12 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        if($category)
+        {
+            $category->delete();
+
+            Session::flash('success','Category deleted succesfully.');
+            return redirect()->route('category.index');
+        }
     }
 }

@@ -53,8 +53,36 @@
                         <td>{{'#'.$category->id}}</td>
                         <td>{{$category->name}}</td>
                         <td>{{$category->slug}}</td>
-                        <td>
+                        <td class="d-flex">
+
                           <a href="{{ route('category.edit',$category->id)}}"><i class="fa fa-edit btn btn-sm btn-info"></i></a>
+                          <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delete_category_{{ $category->id }}">
+                              <i class="fa fa-trash"></i>
+                          </button>
+
+                          <div class="modal fade" id="delete_category_{{ $category->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                              <div class="modal-dialog" role="document">
+                                  <form action="{{ route('category.destroy', $category->id) }}" id="form_delete_category_{{ $category->id }}" method="POST">
+                                      @csrf
+                                      @method('DELETE');
+                                      <div class="modal-content">
+                                          <div class="modal-header">
+                                              <h5 class="modal-title" id="exampleModalLabel">Delete Confirmation</h5>
+                                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                  <span aria-hidden="true">×</span>
+                                              </button>
+                                          </div>
+                                          <div class="modal-body">
+                                              Are you sure want to delete "<b>{{ $category->name }}</b>" category?
+                                          </div>
+                                          <div class="modal-footer">
+                                              <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                                              <button type="submit" class="btn btn-danger">Yes! Delete It</button>
+                                          </div>
+                                      </div>
+                                  </form>
+                              </div>
+                          </div>
                         </td>
                         
                       </tr>

@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 @section('title')
-    Lara Blog | Category Create
+    Lara Blog | Category Edit
 @endsection
 
 @section('content')
@@ -10,12 +10,12 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1 class="m-0">Category Add</h1>
+              <h1 class="m-0">Category Edit</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a href="{{route('admin.home') }}">Home</a></li>
-                <li class="breadcrumb-item active">Category Create</li>
+                <li class="breadcrumb-item active">Category Edit</li>
               </ol>
             </div><!-- /.col -->
           </div><!-- /.row -->
@@ -39,20 +39,19 @@
                   </div>
               @endif
 
-              <form action ="{{ route('category.store') }}" method="POST">
+              <form action ="{{ route('category.update',$category->id) }}" method="POST">
                 @csrf
+                @method('PUT')
+
                   <div class="form-group">
                     <label for="exampleInputEmail1">Name</label>
-                    <input type="text" class="form-control" name="name" id="name" placeholder="Enter Category Name">
+                    <input type="text" class="form-control" name="name" value="{{$category->name}}" id="name" placeholder="Enter Category Name">
                   </div>
                   <div class="form-group">
                     <label for="exampleInputPassword1">Desciption</label>
-                    <textarea class="form-control" name="description"></textarea>
+                    <textarea class="form-control" name="description">{{$category->description}}</textarea>
                   </div>
-               
                 <!-- /.card-body -->
-
-                
                   <button type="submit" class="btn btn-primary">Submit</button>
        
               </form>
